@@ -1,32 +1,32 @@
 # Go-MySQL-Driver
 
- Go  [database/sql](https://golang.org/pkg/database/sql/)MySQL 驱动包
+ Go 连接mysql的驱动包 [database/sql](https://golang.org/pkg/database/sql/) 
 
 ![Go-MySQL-Driver logo](https://raw.github.com/wiki/go-sql-driver/mysql/gomysql_m.png "Golang Gopher holding the MySQL Dolphin")
 
 ---------------------------------------
-  * [Features](#features)
-  * [Requirements](#requirements)
-  * [Installation](#installation)
-  * [Usage](#usage)
+  * [特征](#特征)
+  * [要求](#要求)
+  * [安装](#安装)
+  * [用法](#用法)
     * [DSN (Data Source Name)](#dsn-data-source-name)
-      * [Password](#password)
-      * [Protocol](#protocol)
-      * [Address](#address)
-      * [Parameters](#parameters)
-      * [Examples](#examples)
-    * [Connection pool and timeouts](#connection-pool-and-timeouts)
+      * [密码](#密码)
+      * [协议](#协议)
+      * [地址](#地址)
+      * [参数](#参数)
+      * [例子](#例子)
+    * [连接池和超时](#连接池和超时)
     * [context.Context Support](#contextcontext-support)
     * [ColumnType Support](#columntype-support)
     * [LOAD DATA LOCAL INFILE support](#load-data-local-infile-support)
-    * [time.Time support](#timetime-support)
-    * [Unicode support](#unicode-support)
-  * [Testing / Development](#testing--development)
-  * [License](#license)
+    * [time.Time 支持](#timetime-支持)
+    * [支持 Unicode](#支持-unicode)
+  * [测试 / 发展](#测试--发展)
+  * [许可证](#许可证)
 
 ---------------------------------------
 
-## Features
+## 特征
   * Lightweight and [fast](https://github.com/go-sql-driver/sql-benchmark "golang MySQL-Driver performance")
   * Native Go implementation. No C-bindings, just pure Go
   * Connections over TCP/IPv4, TCP/IPv6, Unix domain sockets or [custom protocols](https://godoc.org/github.com/go-sql-driver/mysql#DialFunc)
@@ -39,20 +39,20 @@
   * Optional `time.Time` parsing
   * Optional placeholder interpolation
 
-## Requirements
+## 要求
   * Go 1.7 or higher. We aim to support the 3 latest versions of Go.
   * MySQL (4.1+), MariaDB, Percona Server, Google CloudSQL or Sphinx (2.2.3+)
 
 ---------------------------------------
 
-## Installation
+## 安装
 Simple install the package to your [$GOPATH](https://github.com/golang/go/wiki/GOPATH "GOPATH") with the [go tool](https://golang.org/cmd/go/ "go command") from shell:
 ```bash
 $ go get -u github.com/go-sql-driver/mysql
 ```
 Make sure [Git is installed](https://git-scm.com/downloads) on your machine and in your system's `PATH`.
 
-## Usage
+## 用法
 _Go MySQL Driver_ is an implementation of Go's `database/sql/driver` interface. You only need to import the driver and can use the full [`database/sql`](https://golang.org/pkg/database/sql/) API then.
 
 Use `mysql` as `driverName` and a valid [DSN](#dsn-data-source-name)  as `dataSourceName`:
@@ -94,14 +94,14 @@ This has the same effect as an empty DSN string:
 
 Alternatively, [Config.FormatDSN](https://godoc.org/github.com/go-sql-driver/mysql#Config.FormatDSN) can be used to create a DSN string by filling a struct.
 
-#### Password
+#### 密码
 Passwords can consist of any character. Escaping is **not** necessary.
 
-#### Protocol
+#### 协议
 See [net.Dial](https://golang.org/pkg/net/#Dial) for more information which networks are available.
 In general you should use an Unix domain socket if available and TCP otherwise for best performance.
 
-#### Address
+#### 地址
 For TCP and UDP networks, addresses have the form `host[:port]`.
 If `port` is omitted, the default port will be used.
 If `host` is a literal IPv6 address, it must be enclosed in square brackets.
@@ -109,7 +109,7 @@ The functions [net.JoinHostPort](https://golang.org/pkg/net/#JoinHostPort) and [
 
 For Unix domain sockets the address is the absolute path to the MySQL-Server-socket, e.g. `/var/run/mysqld/mysqld.sock` or `/tmp/mysql.sock`.
 
-#### Parameters
+#### 参数
 *Parameters are case-sensitive!*
 
 Notice that any of `true`, `TRUE`, `True` or `1` is accepted to stand for a true boolean value. Not surprisingly, false can be specified as any of: `false`, `FALSE`, `False` or `0`.
@@ -349,7 +349,7 @@ Examples:
   * [`tx_isolation=%27REPEATABLE-READ%27`](https://dev.mysql.com/doc/refman/5.5/en/server-system-variables.html#sysvar_tx_isolation): `SET tx_isolation='REPEATABLE-READ'`
 
 
-#### Examples
+#### 例子
 ```
 user@unix(/path/to/socket)/dbname
 ```
@@ -403,18 +403,18 @@ user:password@/
 ```
 
 
-### Connection pool and timeouts
+### 连接池和超时
 The connection pool is managed by Go's database/sql package. For details on how to configure the size of the pool and how long connections stay in the pool see `*DB.SetMaxOpenConns`, `*DB.SetMaxIdleConns`, and `*DB.SetConnMaxLifetime` in the [database/sql documentation](https://golang.org/pkg/database/sql/). The read, write, and dial timeouts for each individual connection are configured with the DSN parameters [`readTimeout`](#readtimeout), [`writeTimeout`](#writetimeout), and [`timeout`](#timeout), respectively.
 
-## `ColumnType` Support
+## `ColumnType` 支持
 This driver supports the [`ColumnType` interface](https://golang.org/pkg/database/sql/#ColumnType) introduced in Go 1.8, with the exception of [`ColumnType.Length()`](https://golang.org/pkg/database/sql/#ColumnType.Length), which is currently not supported.
 
-## `context.Context` Support
+## `context.Context` 支持
 Go 1.8 added `database/sql` support for `context.Context`. This driver supports query timeouts and cancellation via contexts.
 See [context support in the database/sql package](https://golang.org/doc/go1.8#database_sql) for more details.
 
 
-### `LOAD DATA LOCAL INFILE` support
+### `LOAD DATA LOCAL INFILE` 支持
 For this feature you need direct access to the package. Therefore you must change the import path (no `_`):
 ```go
 import "github.com/go-sql-driver/mysql"
@@ -427,7 +427,7 @@ To use a `io.Reader` a handler function must be registered with `mysql.RegisterR
 See the [godoc of Go-MySQL-Driver](https://godoc.org/github.com/go-sql-driver/mysql "golang mysql driver documentation") for details.
 
 
-### `time.Time` support
+### `time.Time` 支持
 The default internal output type of MySQL `DATE` and `DATETIME` values is `[]byte` which allows you to scan the value into a `[]byte`, `string` or `sql.RawBytes` variable in your program.
 
 However, many want to scan MySQL `DATE` and `DATETIME` values into `time.Time` variables, which is the logical opposite in Go to `DATE` and `DATETIME` in MySQL. You can do that by changing the internal output type from `[]byte` to `time.Time` with the DSN parameter `parseTime=true`. You can set the default [`time.Time` location](https://golang.org/pkg/time/#Location) with the `loc` DSN parameter.
@@ -437,7 +437,7 @@ However, many want to scan MySQL `DATE` and `DATETIME` values into `time.Time` v
 Alternatively you can use the [`NullTime`](https://godoc.org/github.com/go-sql-driver/mysql#NullTime) type as the scan destination, which works with both `time.Time` and `string` / `[]byte`.
 
 
-### Unicode support
+### 支持 unicode
 Since version 1.1 Go-MySQL-Driver automatically uses the collation `utf8_general_ci` by default.
 
 Other collations / charsets can be set using the [`collation`](#collation) DSN parameter.
@@ -446,7 +446,7 @@ Version 1.0 of the driver recommended adding `&charset=utf8` (alias for `SET NAM
 
 See http://dev.mysql.com/doc/refman/5.7/en/charset-unicode.html for more details on MySQL's Unicode support.
 
-## Testing / Development
+## 测试 / 发展
 To run the driver tests you may need to adjust the configuration. See the [Testing Wiki-Page](https://github.com/go-sql-driver/mysql/wiki/Testing "Testing") for details.
 
 Go-MySQL-Driver is not feature-complete yet. Your help is very appreciated.
@@ -456,10 +456,10 @@ See the [Contribution Guidelines](https://github.com/go-sql-driver/mysql/blob/ma
 
 ---------------------------------------
 
-## License
-Go-MySQL-Driver is licensed under the [Mozilla Public License Version 2.0](https://raw.github.com/go-sql-driver/mysql/master/LICENSE)
+## 许可证
+Go-MySQL-Driver 许可遵循 [Mozilla Public License Version 2.0](https://raw.github.com/go-sql-driver/mysql/master/LICENSE)
 
-Mozilla summarizes the license scope as follows:
+Mozilla 许可范围:
 > MPL: The copyleft applies to any files containing MPLed code.
 
 
