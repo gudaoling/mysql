@@ -1,6 +1,6 @@
 # Go-MySQL-Driver
 
-A MySQL-Driver for Go's [database/sql](https://golang.org/pkg/database/sql/) package
+ Go  [database/sql](https://golang.org/pkg/database/sql/)MySQL 驱动包
 
 ![Go-MySQL-Driver logo](https://raw.github.com/wiki/go-sql-driver/mysql/gomysql_m.png "Golang Gopher holding the MySQL Dolphin")
 
