@@ -9,17 +9,18 @@
   * [要求](#要求)
   * [安装](#安装)
   * [用法](#用法)
-    * [DSN (Data Source Name)](#dsn-data-source-name)
+    * [DSN (数据源名称)](#dsn-数据源名称)
+    
       * [密码](#密码)
       * [协议](#协议)
       * [地址](#地址)
       * [参数](#参数)
       * [例子](#例子)
     * [连接池和超时](#连接池和超时)
-    * [context.Context Support](#contextcontext-support)
-    * [ColumnType Support](#columntype-support)
-    * [LOAD DATA LOCAL INFILE support](#load-data-local-infile-support)
-    * [time.Time 支持](#timetime-支持)
+    * [支持context.Context](#支持-contextcontext)
+    * [支持ColumnType](#支持-columntype)
+    * [支持数据加载 ](#load-data-local-infile-support)
+    * [支持time.Time](#支持-timetime)
     * [支持 Unicode](#支持-unicode)
   * [测试 / 发展](#测试--发展)
   * [许可证](#许可证)
@@ -27,21 +28,21 @@
 ---------------------------------------
 
 ## 特征
-  * Lightweight and [fast](https://github.com/go-sql-driver/sql-benchmark "golang MySQL-Driver performance")
-  * Native Go implementation. No C-bindings, just pure Go
-  * Connections over TCP/IPv4, TCP/IPv6, Unix domain sockets or [custom protocols](https://godoc.org/github.com/go-sql-driver/mysql#DialFunc)
-  * Automatic handling of broken connections
-  * Automatic Connection Pooling *(by database/sql package)*
-  * Supports queries larger than 16MB
-  * Full [`sql.RawBytes`](https://golang.org/pkg/database/sql/#RawBytes) support.
-  * Intelligent `LONG DATA` handling in prepared statements
-  * Secure `LOAD DATA LOCAL INFILE` support with file Whitelisting and `io.Reader` support
-  * Optional `time.Time` parsing
-  * Optional placeholder interpolation
+  * 轻量级且 [效率快](https://github.com/go-sql-driver/sql-benchmark "golang MySQL-Driver performance")
+  * 纯go语言编写
+  * 可用 TCP/IPv4, TCP/IPv6, Unix 域协议 或 [自定义协议]连接(https://godoc.org/github.com/go-sql-driver/mysql#DialFunc)
+  * 自动处理空闲连接
+  * 自动连接池 *(by database/sql package)*
+  * 支持大于16MB的查询
+  * 完全支持 [`sql.RawBytes`](https://golang.org/pkg/database/sql/#RawBytes) .
+  * 智能 `批量` 处理预处理语句
+  * 支持白名单文件 和 `io.Reader` 的`数据加载` 
+  * 可选 `time.Time` 转换
+  * 可选占位符插值
 
 ## 要求
-  * Go 1.7 or higher. We aim to support the 3 latest versions of Go.
-  * MySQL (4.1+), MariaDB, Percona Server, Google CloudSQL or Sphinx (2.2.3+)
+  * 最低支持 Go 1.3.
+  * MySQL (4.1+), MariaDB, Percona Server, Google CloudSQL 或 Sphinx (2.2.3+)
 
 ---------------------------------------
 
@@ -66,7 +67,7 @@ db, err := sql.Open("mysql", "user:password@/dbname")
 [Examples are available in our Wiki](https://github.com/go-sql-driver/mysql/wiki/Examples "Go-MySQL-Driver Examples").
 
 
-### DSN (Data Source Name)
+### DSN (数据源名称)
 
 The Data Source Name has a common format, like e.g. [PEAR DB](http://pear.php.net/manual/en/package.database.db.intro-dsn.php) uses it, but without type-prefix (optional parts marked by squared brackets):
 ```
@@ -331,19 +332,19 @@ Default:        0
 I/O write timeout. The value must be a decimal number with a unit suffix (*"ms"*, *"s"*, *"m"*, *"h"*), such as *"30s"*, *"0.5m"* or *"1m30s"*.
 
 
-##### System Variables
+##### 系统变量
 
-Any other parameters are interpreted as system variables:
+其它参数可解析为系统变量:
   * `<boolean_var>=<value>`: `SET <boolean_var>=<value>`
   * `<enum_var>=<value>`: `SET <enum_var>=<value>`
   * `<string_var>=%27<value>%27`: `SET <string_var>='<value>'`
 
-Rules:
-* The values for string variables must be quoted with `'`.
-* The values must also be [url.QueryEscape](http://golang.org/pkg/net/url/#QueryEscape)'ed!
+规则:
+* 字符串变量的值必须引用 `'`.
+* 值必须是 [url.QueryEscape](http://golang.org/pkg/net/url/#QueryEscape)'ed!
  (which implies values of string variables must be wrapped with `%27`).
 
-Examples:
+例子:
   * `autocommit=1`: `SET autocommit=1`
   * [`time_zone=%27Europe%2FParis%27`](https://dev.mysql.com/doc/refman/5.5/en/time-zone-support.html): `SET time_zone='Europe/Paris'`
   * [`tx_isolation=%27REPEATABLE-READ%27`](https://dev.mysql.com/doc/refman/5.5/en/server-system-variables.html#sysvar_tx_isolation): `SET tx_isolation='REPEATABLE-READ'`
